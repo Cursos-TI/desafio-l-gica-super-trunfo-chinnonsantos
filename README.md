@@ -69,6 +69,17 @@ No nível Mestre, o desafio se intensifica com a adição de funcionalidades ava
 
 ---
 
+### 🧪 Como testar?
+
+- Opção 1 - Use o Codespace do GitHub com extensão [`C/C++` da Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) instalado.
+- Opção 2 - Rode o comando `gcc -o superTrunfo logicaSuperTrunfo.c` e depois `superTrunfo.exe`.
+
+![Teste no GCC do Windows 11](docs/test-gcc-windows11.png)
+
+> Nota: Para Opção 2, certifique-se de que tenha um compilador C instalado na máquina (ex: [GCC](https://www.msys2.org/)).
+
+---
+
 Boa sorte no desenvolvimento deste desafio e aproveite para aprender e se divertir enquanto progride pelos níveis!
 
 Equipe de Ensino - MateCheck
