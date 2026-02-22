@@ -17,7 +17,7 @@ int main() {
     printf("Vamos cadastrar duas cartas, comparando a densidade populacional! \n\n");
 
     // Cadastro da Carta 1 pelo Usuário (Terminal):
-    // Sugestão: GYN62, Goiás, Goiânia, 1536097, 739.2, 15, 120000.0, 0.799
+    // Sugestão: GYN62, Goias, Goiania, 1536097, 739.2, 15, 120000.0, 0.799
     printf("Digite o codigo da cidade 1 (Alfanumerico ate 10 caracteres): \n");
     scanf("%s", cardCode1);
 
@@ -43,7 +43,7 @@ int main() {
     scanf("%f", &cardHDI1);
 
     // Cadastro da Carta 2 pelo Usuário (Terminal):
-    // Sugestão: SAMPA11, São Paulo, São Paulo, 12325232, 1521.11, 25, 500000.0, 0.805
+    // Sugestão: SAMPA11, Sao Paulo, Sao Paulo, 12325232, 1521.11, 25, 500000.0, 0.805
     printf("Digite o codigo da cidade 2 (Alfanumerico ate 10 caracteres): \n");
     scanf("%s", cardCode2);
 

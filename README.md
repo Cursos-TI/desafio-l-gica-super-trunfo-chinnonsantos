@@ -72,7 +72,9 @@ No nível Mestre, o desafio se intensifica com a adição de funcionalidades ava
 ### 🧪 Como testar?
 
 - Opção 1 - Use o Codespace do GitHub com extensão [`C/C++` da Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) instalado.
-- Opção 2 - Rode o comando `gcc -o superTrunfo logicaSuperTrunfo.c` (gerar binário) e depois `.\superTrunfo` (executar binário).
+- Opção 2 - Na máquina local, rode o comando `gcc -o superTrunfo logicaSuperTrunfo.c` (gerar binário) e depois `.\superTrunfo` (executar binário).
+
+![Teste no Codespaces do GitHub](docs/test-codespaces-github.png)
 
 ![Teste no GCC do Windows 11](docs/test-gcc-windows11.png)
 
