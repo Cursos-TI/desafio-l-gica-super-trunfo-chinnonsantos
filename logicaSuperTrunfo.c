@@ -34,32 +34,32 @@ typedef struct {
 // ==========================================
 
 // Função para limpar o buffer do teclado
-void limparBuffer() {
+void clearBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
 // Função para coletar dados simples (números, palavras únicas)
-// Recebe a pergunta (prompt), a máscara do tipo de dado (formato) e o endereço da variável
-void inputWord(const char *prompt, const char *formato, void *variavel) {
+// Recebe a pergunta (prompt), a máscara do tipo de dado (format) e o endereço da variável
+void inputWord(const char *prompt, const char *format, void *variable) {
     printf("%s", prompt);
-    scanf(formato, variavel);
-    limparBuffer(); // Limpa o '\n' ou qualquer lixo residual após a leitura
+    scanf(format, variable);
+    clearBuffer(); // Limpa o '\n' ou qualquer lixo residual após a leitura
 }
 
 // Função para coletar textos longos com espaços (frases)
-// Recebe a pergunta (prompt), o vetor de caracteres (variavel) e o tamanho máximo
-void inputPhrase(const char *prompt, char *variavel, int tamanhoMaximo) {
+// Recebe a pergunta (prompt), o vetor de caracteres (variable) e o tamanho máximo
+void inputPhrase(const char *prompt, char *variable, int maxSize) {
     printf("%s", prompt);
-    fgets(variavel, tamanhoMaximo, stdin);
-    variavel[strcspn(variavel, "\n")] = 0; // Remove a quebra de linha que o fgets captura
+    fgets(variable, maxSize, stdin);
+    variable[strcspn(variable, "\n")] = 0; // Remove a quebra de linha que o fgets captura
 }
 
 // Esta função pede os dados, faz os cálculos e devolve uma carta pronta
-TrumpCard registarCarta(int numeroCarta) {
+TrumpCard registerCard(int cardNumber) {
     TrumpCard card; // Criamos uma carta temporária para preencher
     
-    printf("\n--- REGISTO DA CARTA %d ---\n", numeroCarta);
+    printf("\n--- REGISTO DA CARTA %d ---\n", cardNumber);
     
     inputWord("Digite o codigo da cidade (Alfanumerico ate 10 caracteres): \n", "%10s", card.code);
     inputPhrase("Digite o estado da cidade (Alfanumerico ate 30 caracteres): \n", card.state, 31);
@@ -75,7 +75,7 @@ TrumpCard registarCarta(int numeroCarta) {
     card.gdpPerCapita = (card.population > 0) ? (card.gdp * 1000000) / card.population : 0; 
     
     // Mostra um pequeno resumo após o registo
-    printf("\nResumo da Carta %d:\n", numeroCarta);
+    printf("\nResumo da Carta %d:\n", cardNumber);
     printf("Densidade Populacional de %s: %.2f habitantes/km2 \n", card.city, card.populationDensity);
     printf("PIB per capita de %s: %.2f Reais \n", card.city, card.gdpPerCapita);
     
@@ -84,46 +84,46 @@ TrumpCard registarCarta(int numeroCarta) {
 
 // Esta função usa o switch para devolver o valor numérico do atributo escolhido.
 // Também guarda o nome do atributo e avisa se a regra é invertida (menor vence).
-float obterValorAtributo(TrumpCard card, int opcao, char *nomeAtributo, int *regraInvertida) {
-    *regraInvertida = 0; // Por norma, o maior valor vence
+float getAttributeValue(TrumpCard card, int option, char *attributeName, int *isInvertedRule) {
+    *isInvertedRule = 0; // Por norma, o maior valor vence
 
-    switch(opcao) {
+    switch(option) {
         case 1:
-            strcpy(nomeAtributo, "Populacao");
+            strcpy(attributeName, "Populacao");
             return (float) card.population;
         case 2:
-            strcpy(nomeAtributo, "Area");
+            strcpy(attributeName, "Area");
             return card.area;
         case 3:
-            strcpy(nomeAtributo, "PIB");
+            strcpy(attributeName, "PIB");
             return card.gdp;
         case 4:
-            strcpy(nomeAtributo, "Pontos Turisticos");
+            strcpy(attributeName, "Pontos Turisticos");
             return (float) card.touristAttractions;
         case 5:
-            strcpy(nomeAtributo, "Densidade Populacional");
-            *regraInvertida = 1; // REGRA ESPECIAL: Neste atributo, o MENOR vence!
+            strcpy(attributeName, "Densidade Populacional");
+            *isInvertedRule = 1; // REGRA ESPECIAL: Neste atributo, o MENOR vence!
             return card.populationDensity;
         case 6:
-            strcpy(nomeAtributo, "PIB per Capita");
+            strcpy(attributeName, "PIB per Capita");
             return card.gdpPerCapita;
         case 7:
-            strcpy(nomeAtributo, "IDH");
+            strcpy(attributeName, "IDH");
             return card.hdi;
         default:
-            strcpy(nomeAtributo, "Invalido");
+            strcpy(attributeName, "Invalido");
             return 0.0;
     }
 }
 
 // Comparar um único atributo e devolver quem ganhou (1 para carta 1, 2 para carta 2, 0 empate)
-int compararAtributo(TrumpCard card1, TrumpCard card2, int opcao) {
-    char nome[30];
-    int invertido;
-    float card1AttributeValue = obterValorAtributo(card1, opcao, nome, &invertido);
-    float card2AttributeValue = obterValorAtributo(card2, opcao, nome, &invertido);
+int compareAttribute(TrumpCard card1, TrumpCard card2, int option) {
+    char attributeName[30];
+    int isInverted;
+    float card1AttributeValue = getAttributeValue(card1, option, attributeName, &isInverted);
+    float card2AttributeValue = getAttributeValue(card2, option, attributeName, &isInverted);
 
-    printf("\nComparando %s:\n", nome);
+    printf("\nComparando %s:\n", attributeName);
     printf("Carta 1 (%s): %.2f X ", card1.city, card1AttributeValue);
     printf("Carta 2 (%s): %.2f\n", card2.city, card2AttributeValue);
 
@@ -133,11 +133,11 @@ int compararAtributo(TrumpCard card1, TrumpCard card2, int opcao) {
     }
 
     // Lógica para decidir quem ganha baseada na regra (normal vs invertida)
-    if ((!invertido && card1AttributeValue > card2AttributeValue) || (invertido && card1AttributeValue < card2AttributeValue)) {
-        printf("-> Carta 1 (%s) venceu em %s!\n", card1.city, nome);
+    if ((!isInverted && card1AttributeValue > card2AttributeValue) || (isInverted && card1AttributeValue < card2AttributeValue)) {
+        printf("-> Carta 1 (%s) venceu em %s!\n", card1.city, attributeName);
         return 1;
     } else {
-        printf("-> Carta 2 (%s) venceu em %s!\n", card2.city, nome);
+        printf("-> Carta 2 (%s) venceu em %s!\n", card2.city, attributeName);
         return 2;
     }
 }
@@ -149,8 +149,8 @@ int compararAtributo(TrumpCard card1, TrumpCard card2, int opcao) {
 int main() {
     // Definição das variáveis para armazenar as propriedades das cidades
     TrumpCard card1, card2;
-    int escolha1 = 0, escolha2 = 0;
-    int pontosCarta1 = 0, pontosCarta2 = 0;
+    int choice1 = 0, choice2 = 0;
+    int card1Points = 0, card2Points = 0;
     
     printf("\n=== Desafio Super Trunfo - Paises ===\n");
     printf("Vamos cadastrar duas cartas, e depois você vai escolher 2 atributos para comparar! \n");
@@ -160,14 +160,14 @@ int main() {
     // ------------------------------------------
     // Sugestão: GYN62, Goias, Goiania, 1536097, 739.2, 15, 120000.0, 0.799
     // ==========================================
-    card1 = registarCarta(1);
+    card1 = registerCard(1);
 
     // ==========================================
     // CARTA 2
     // ------------------------------------------
     // Sugestão: SAMPA11, Sao Paulo, Sao Paulo, 12325232, 1521.11, 25, 500000.0, 0.805
     // ==========================================
-    card2 = registarCarta(2);
+    card2 = registerCard(2);
 
     // MENU INTERATIVO
     printf("\n=== MENU DE BATALHA ===\n");
@@ -175,14 +175,14 @@ int main() {
     printf("1 - Populacao\n2 - Area\n3 - PIB\n4 - Pontos Turisticos\n");
     printf("5 - Densidade Populacional\n6 - PIB per Capita\n7 - IDH\n");
     
-    inputWord("\nEscolha o PRIMEIRO atributo (1 a 7): ", "%d", &escolha1);
+    inputWord("\nEscolha o PRIMEIRO atributo (1 a 7): ", "%d", &choice1);
     
     do {
-        inputWord("Escolha o SEGUNDO atributo (diferente do primeiro, 1 a 7): ", "%d", &escolha2);
-        if (escolha1 == escolha2) {
+        inputWord("Escolha o SEGUNDO atributo (diferente do primeiro, 1 a 7): ", "%d", &choice2);
+        if (choice1 == choice2) {
             printf("Erro: Tem de escolher um atributo diferente!\n");
         }
-    } while (escolha1 == escolha2);
+    } while (choice1 == choice2);
 
     // ==========================================
     // RESOLUÇÃO DA BATALHA
@@ -192,21 +192,21 @@ int main() {
     printf("\n=== RESULTADOS DA BATALHA ===");
     
     // Compara o primeiro atributo
-    int vencedor1 = compararAtributo(card1, card2, escolha1);
-    if (vencedor1 == 1) pontosCarta1++;
-    else if (vencedor1 == 2) pontosCarta2++;
+    int winner1 = compareAttribute(card1, card2, choice1);
+    if (winner1 == 1) card1Points++;
+    else if (winner1 == 2) card2Points++;
 
     // Compara o segundo atributo
-    int vencedor2 = compararAtributo(card1, card2, escolha2);
-    if (vencedor2 == 1) pontosCarta1++;
-    else if (vencedor2 == 2) pontosCarta2++;
+    int winner2 = compareAttribute(card1, card2, choice2);
+    if (winner2 == 1) card1Points++;
+    else if (winner2 == 2) card2Points++;
 
     // Declara o Vencedor Final
     printf("\n=== VENCEDOR FINAL ===\n");
-    if (pontosCarta1 > pontosCarta2) {
-        printf("A Carta 1 (%s) e a grande VENCEDORA com %d pontos!\n", card1.city, pontosCarta1);
-    } else if (pontosCarta2 > pontosCarta1) {
-        printf("A Carta 2 (%s) e a grande VENCEDORA com %d pontos!\n", card2.city, pontosCarta2);
+    if (card1Points > card2Points) {
+        printf("A Carta 1 (%s) e a grande VENCEDORA com %d pontos!\n", card1.city, card1Points);
+    } else if (card2Points > card1Points) {
+        printf("A Carta 2 (%s) e a grande VENCEDORA com %d pontos!\n", card2.city, card2Points);
     } else {
         printf("A batalha terminou num EMPATE (1x1)!\n");
     }
