@@ -44,7 +44,7 @@ void limparBuffer() {
 void inputWord(const char *prompt, const char *formato, void *variavel) {
     printf("%s", prompt);
     scanf(formato, variavel);
-    limpar_buffer(); // Limpa o '\n' ou qualquer lixo residual após a leitura
+    limparBuffer(); // Limpa o '\n' ou qualquer lixo residual após a leitura
 }
 
 // Função para coletar textos longos com espaços (frases)
@@ -53,6 +53,33 @@ void inputPhrase(const char *prompt, char *variavel, int tamanhoMaximo) {
     printf("%s", prompt);
     fgets(variavel, tamanhoMaximo, stdin);
     variavel[strcspn(variavel, "\n")] = 0; // Remove a quebra de linha que o fgets captura
+}
+
+// Esta função pede os dados, faz os cálculos e devolve uma carta pronta
+CartaTrunfo registarCarta(int numeroCarta) {
+    CartaTrunfo carta; // Criamos uma carta temporária para preencher
+    
+    printf("\n--- REGISTO DA CARTA %d ---\n", numeroCarta);
+    
+    inputWord("Digite o codigo da cidade (Alfanumerico ate 10 caracteres): \n", "%10s", carta.code);
+    inputPhrase("Digite o estado da cidade (Alfanumerico ate 30 caracteres): \n", carta.state, 31);
+    inputPhrase("Digite o nome da cidade (Alfanumerico ate 30 caracteres): \n", carta.city, 31);
+    inputWord("Digite a populacao da cidade (Entre 0 a 4.294.967.295): \n", "%u", &carta.population);
+    inputWord("Digite a area da cidade (em km2 - somente numeros): \n", "%f", &carta.area);
+    inputWord("Digite o numero de pontos turisticos da cidade: \n", "%u", &carta.touristAttractions);
+    inputWord("Digite o PIB da cidade (em milhoes de Reais): \n", "%f", &carta.gdp);
+    inputWord("Digite o IDH da cidade: \n", "%f", &carta.hdi);
+
+    // Realiza os cálculos dinâmicos dentro da própria função
+    carta.populationDensity = carta.population / carta.area; 
+    carta.gdpPerCapita = (carta.population > 0) ? (carta.gdp * 1000000) / carta.population : 0; 
+    
+    // Mostra um pequeno resumo após o registo
+    printf("\nResumo da Carta %d:\n", numeroCarta);
+    printf("Densidade Populacional de %s: %.2f habitantes/km2 \n", carta.city, carta.populationDensity);
+    printf("PIB per capita de %s: %.2f Reais \n", carta.city, carta.gdpPerCapita);
+    
+    return carta; // Devolve a carta preenchida para quem chamou a função
 }
 
 // ==========================================
@@ -71,42 +98,14 @@ int main() {
     // ------------------------------------------
     // Sugestão: GYN62, Goias, Goiania, 1536097, 739.2, 15, 120000.0, 0.799
     // ==========================================
-    inputWord("Digite o codigo da cidade 1 (Alfanumerico ate 10 caracteres): \n", "%10s", carta1.code);
-    inputPhrase("Digite o estado da cidade 1 (Alfanumerico ate 30 caracteres): \n", carta1.state, 31);
-    inputPhrase("Digite o nome da cidade 1 (Alfanumerico ate 30 caracteres): \n", carta1.city, 31);
-    inputWord("Digite a populacao da cidade 1 (Entre 0 a 4.294.967.295): \n", "%i", &carta1.population);
-    inputWord("Digite a area da cidade 1 (em km2 - somente numeros, permitido decimais): \n", "%f", &carta1.area);
-    inputWord("Digite o numero de pontos turisticos da cidade 1 (Entre 0 a 4.294.967.295): \n", "%u", &carta1.touristAttractions);
-    inputWord("Digite o PIB da cidade 1 (em milhoes de Reais - somente numeros, permitido decimais): \n", "%f", &carta1.gdp);
-    inputWord("Digite o IDH da cidade 1 (somente numeros, permitido decimais): \n", "%f", &carta1.hdi);
-
-    // Calcular Densidade Populacional e PIB per capita para a Carta 1
-    carta1.populationDensity = carta1.population / carta1.area; // Densidade = População / Área
-    carta1.gdpPerCapita = (carta1.population > 0) ? (carta1.gdp * 1000000) / carta1.population : 0; // PIB per capita = PIB total / População
-
-    printf("Densidade Populacional da cidade %s: %.2f habitantes/km2 \n", carta1.city, carta1.populationDensity);
-    printf("PIB per capita da cidade %s: %.2f Reais \n\n", carta1.city, carta1.gdpPerCapita);
+    carta1 = registarCarta(1);
 
     // ==========================================
     // CARTA 2
     // ------------------------------------------
     // Sugestão: SAMPA11, Sao Paulo, Sao Paulo, 12325232, 1521.11, 25, 500000.0, 0.805
     // ==========================================
-    inputWord("Digite o codigo da cidade 2 (Alfanumerico ate 10 caracteres): \n", "%10s", carta2.code);
-    inputPhrase("Digite o estado da cidade 2 (Alfanumerico ate 30 caracteres): \n", carta2.state, 31);
-    inputPhrase("Digite o nome da cidade 2 (Alfanumerico ate 30 caracteres): \n", carta2.city, 31);
-    inputWord("Digite a populacao da cidade 2 (Entre 0 a 4.294.967.295): \n", "%i", &carta2.population);
-    inputWord("Digite a area da cidade 2 (em km2 - somente numeros, permitido decimais): \n", "%f", &carta2.area);
-    inputWord("Digite o numero de pontos turisticos da cidade 2 (Entre 0 a 4.294.967.295): \n", "%u", &carta2.touristAttractions);
-    inputWord("Digite o PIB da cidade 2 (em milhoes de Reais - somente numeros, permitido decimais): \n", "%f", &carta2.gdp);
-    inputWord("Digite o IDH da cidade 2 (somente numeros, permitido decimais): \n", "%f", &carta2.hdi);
-
-    // Calcular Densidade Populacional e PIB per capita para a Carta 2
-    carta2.populationDensity = carta2.population / carta2.area; // Densidade = População / Área
-    carta2.gdpPerCapita = (carta2.population > 0) ? (carta2.gdp * 1000000) / carta2.population : 0; // PIB per capita = PIB total / População
-
-    printf("Densidade Populacional da cidade %s: %.2f habitantes/km2 \n", carta2.city, carta2.populationDensity);
-    printf("PIB per capita da cidade %s: %.2f Reais \n\n", carta2.city, carta2.gdpPerCapita);
+    carta2 = registarCarta(2);
 
     // ==========================================
     // RESULTADO
@@ -114,17 +113,18 @@ int main() {
     // O critério de comparação escolhido para este desafio é a Densidade Populacional (cardPopulationDensity)
     // Menor densidade = Vencedora!
     // ==========================================
-    if (cardPopulationDensity1 < cardPopulationDensity2) {
+    printf("\n--- RESULTADO FINAL ---\n");
+    if (carta1.populationDensity < carta2.populationDensity) {
         printf(
             "A cidade %s tem a menor densidade populacional (%.2f habitantes/km2), sendo a vencedora! \n",
-            cardCity1,
-            cardPopulationDensity1
+            carta1.city,
+            carta1.populationDensity
         );
-    } else if (cardPopulationDensity2 < cardPopulationDensity1) {
+    } else if (carta2.populationDensity < carta1.populationDensity) {
         printf(
             "A cidade %s tem a menor densidade populacional (%.2f habitantes/km2), sendo a vencedora! \n",
-            cardCity2,
-            cardPopulationDensity2
+            carta2.city,
+            carta2.populationDensity
         );
     } else {
         printf("Ambas as cidades têm a mesma densidade populacional, nenhuma venceu! \n");
