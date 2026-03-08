@@ -76,7 +76,11 @@ No nível Mestre, o desafio se intensifica com a adição de funcionalidades ava
 
 ![Teste no Codespaces do GitHub](docs/test-codespaces-github.png)
 
-![Teste no GCC do Windows 11](docs/test-gcc-windows11.png)
+![Teste no MacOS 1](docs/test-success-1.png)
+
+![Teste no MacOS 2](docs/test-success-2.png)
+
+![Teste no MacOS 3](docs/test-validation.png)
 
 > Nota: Para Opção 2, certifique-se de que tenha um compilador C instalado na máquina (ex: [GCC](https://www.msys2.org/)).
 

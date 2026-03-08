@@ -6,3 +6,6 @@
 logicaSuperTrunfo
 superTrunfo
 /logicaSuperTrunfo.*
+
+# MacOS
+.DS_Store
