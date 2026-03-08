@@ -4,3 +4,5 @@
 # Compiled Object files
 *.exe
 logicaSuperTrunfo
+superTrunfo
+/logicaSuperTrunfo.*
