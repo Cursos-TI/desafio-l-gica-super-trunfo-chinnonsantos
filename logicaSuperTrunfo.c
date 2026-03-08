@@ -5,11 +5,35 @@
 // Tema 2 - Comparação das Cartas
 // As regras estão descritas no README do projeto
 
+// ==========================================
+// FUNÇÕES AUXILIARES
+// ==========================================
+
 // Função para limpar o buffer do teclado
 void limparBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) { }
 }
+
+// Função para coletar dados simples (números, palavras únicas)
+// Recebe a pergunta (prompt), a máscara do tipo de dado (formato) e o endereço da variável
+void inputWord(const char *prompt, const char *formato, void *variavel) {
+    printf("%s", prompt);
+    scanf(formato, variavel);
+    limpar_buffer(); // Limpa o '\n' ou qualquer lixo residual após a leitura
+}
+
+// Função para coletar textos longos com espaços (frases)
+// Recebe a pergunta (prompt), o vetor de caracteres (variavel) e o tamanho máximo
+void inputPhrase(const char *prompt, char *variavel, int tamanhoMaximo) {
+    printf("%s", prompt);
+    fgets(variavel, tamanhoMaximo, stdin);
+    variavel[strcspn(variavel, "\n")] = 0; // Remove a quebra de linha que o fgets captura
+}
+
+// ==========================================
+// FUNÇÃO PRINCIPAL
+// ==========================================
 
 int main() {
     // Definição das variáveis para armazenar as propriedades das cidades
@@ -29,41 +53,19 @@ int main() {
     // ------------------------------------------
     // Sugestão: GYN62, Goias, Goiania, 1536097, 739.2, 15, 120000.0, 0.799
     // ==========================================
-    printf("Digite o codigo da cidade 1 (Alfanumerico ate 10 caracteres): \n");
-    scanf("%s", cardCode1);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite o estado da cidade 1 (Alfanumerico ate 30 caracteres): \n");
-    fgets(cardState1, 31, stdin);
-    cardState1[strcspn(cardState1, "\n")] = 0; // Remove o caractere de nova linha
-
-    printf("Digite o nome da cidade 1 (Alfanumerico ate 30 caracteres): \n");
-    fgets(cardCity1, 31, stdin);
-    cardCity1[strcspn(cardCity1, "\n")] = 0; // Remove o caractere de nova linha
-
-    printf("Digite a populacao da cidade 1 (Entre 0 a 4.294.967.295): \n");
-    scanf("%i", &cardPopulation1);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite a area da cidade 1 (em km2 - somente numeros, permitido decimais): \n");
-    scanf("%f", &cardArea1);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite o numero de pontos turisticos da cidade 1 (Entre 0 a 4.294.967.295): \n");
-    scanf("%u", &cardTouristAttractions1);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite o PIB da cidade 1 (em milhoes de Reais - somente numeros, permitido decimais): \n");
-    scanf("%f", &cardGDP1);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite o IDH da cidade 1 (somente numeros, permitido decimais): \n");
-    scanf("%f", &cardHDI1);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
+    inputWord("Digite o codigo da cidade 1 (Alfanumerico ate 10 caracteres): \n", "%10s", cardCode1);
+    inputPhrase("Digite o estado da cidade 1 (Alfanumerico ate 30 caracteres): \n", cardState1, 31);
+    inputPhrase("Digite o nome da cidade 1 (Alfanumerico ate 30 caracteres): \n", cardCity1, 31);
+    inputWord("Digite a populacao da cidade 1 (Entre 0 a 4.294.967.295): \n", "%i", &cardPopulation1);
+    inputWord("Digite a area da cidade 1 (em km2 - somente numeros, permitido decimais): \n", "%f", &cardArea1);
+    inputWord("Digite o numero de pontos turisticos da cidade 1 (Entre 0 a 4.294.967.295): \n", "%u", &cardTouristAttractions1);
+    inputWord("Digite o PIB da cidade 1 (em milhoes de Reais - somente numeros, permitido decimais): \n", "%f", &cardGDP1);
+    inputWord("Digite o IDH da cidade 1 (somente numeros, permitido decimais): \n", "%f", &cardHDI1);
 
     // Calcular Densidade Populacional e PIB per capita para a Carta 1
     cardPopulationDensity1 = cardPopulation1 / cardArea1; // Densidade = População / Área
     cardGDPPerCapita1 = (cardPopulation1 > 0) ? (cardGDP1 * 1000000) / cardPopulation1 : 0; // PIB per capita = PIB total / População
+
     printf("Densidade Populacional da cidade %s: %.2f habitantes/km2 \n", cardCity1, cardPopulationDensity1);
     printf("PIB per capita da cidade %s: %.2f Reais \n\n", cardCity1, cardGDPPerCapita1);
 
@@ -72,41 +74,19 @@ int main() {
     // ------------------------------------------
     // Sugestão: SAMPA11, Sao Paulo, Sao Paulo, 12325232, 1521.11, 25, 500000.0, 0.805
     // ==========================================
-    printf("Digite o codigo da cidade 2 (Alfanumerico ate 10 caracteres): \n");
-    scanf("%s", cardCode2);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite o estado da cidade 2 (Alfanumerico ate 30 caracteres): \n");
-    fgets(cardState2, 31, stdin);
-    cardState2[strcspn(cardState2, "\n")] = 0; // Remove o caractere de nova linha
-
-    printf("Digite o nome da cidade 2 (Alfanumerico ate 30 caracteres): \n");
-    fgets(cardCity2, 31, stdin);
-    cardCity2[strcspn(cardCity2, "\n")] = 0; // Remove o caractere de nova linha
-
-    printf("Digite a populacao da cidade 2 (Entre 0 a 4.294.967.295): \n");
-    scanf("%i", &cardPopulation2);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite a area da cidade 2 (em km2 - somente numeros, permitido decimais): \n");
-    scanf("%f", &cardArea2);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite o numero de pontos turisticos da cidade 2 (Entre 0 a 4.294.967.295): \n");
-    scanf("%u", &cardTouristAttractions2);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite o PIB da cidade 2 (em milhoes de Reais - somente numeros, permitido decimais): \n");
-    scanf("%f", &cardGDP2);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
-
-    printf("Digite o IDH da cidade 2 (somente numeros, permitido decimais): \n");
-    scanf("%f", &cardHDI2);
-    limparBuffer(); // Limpa o '\n' deixado pelo scanf acima
+    inputWord("Digite o codigo da cidade 2 (Alfanumerico ate 10 caracteres): \n", "%10s", cardCode2);
+    inputPhrase("Digite o estado da cidade 2 (Alfanumerico ate 30 caracteres): \n", cardState2, 31);
+    inputPhrase("Digite o nome da cidade 2 (Alfanumerico ate 30 caracteres): \n", cardCity2, 31);
+    inputWord("Digite a populacao da cidade 2 (Entre 0 a 4.294.967.295): \n", "%i", &cardPopulation2);
+    inputWord("Digite a area da cidade 2 (em km2 - somente numeros, permitido decimais): \n", "%f", &cardArea2);
+    inputWord("Digite o numero de pontos turisticos da cidade 2 (Entre 0 a 4.294.967.295): \n", "%u", &cardTouristAttractions2);
+    inputWord("Digite o PIB da cidade 2 (em milhoes de Reais - somente numeros, permitido decimais): \n", "%f", &cardGDP2);
+    inputWord("Digite o IDH da cidade 2 (somente numeros, permitido decimais): \n", "%f", &cardHDI2);
 
     // Calcular Densidade Populacional e PIB per capita para a Carta 2
     cardPopulationDensity2 = cardPopulation2 / cardArea2; // Densidade = População / Área
     cardGDPPerCapita2 = (cardPopulation2 > 0) ? (cardGDP2 * 1000000) / cardPopulation2 : 0; // PIB per capita = PIB total / População
+
     printf("Densidade Populacional da cidade %s: %.2f habitantes/km2 \n", cardCity2, cardPopulationDensity2);
     printf("PIB per capita da cidade %s: %.2f Reais \n\n", cardCity2, cardGDPPerCapita2);
 
