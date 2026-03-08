@@ -174,15 +174,22 @@ int main() {
     printf("Escolha os atributos para a comparacao:\n");
     printf("1 - Populacao\n2 - Area\n3 - PIB\n4 - Pontos Turisticos\n");
     printf("5 - Densidade Populacional\n6 - PIB per Capita\n7 - IDH\n");
-    
-    inputWord("\nEscolha o PRIMEIRO atributo (1 a 7): ", "%d", &choice1);
+
+    do {
+        inputWord("\nEscolha o PRIMEIRO atributo (1 a 7): ", "%d", &choice1);
+        if (choice1 < 1 || choice1 > 7) {
+            printf("Erro: Escolha um numero valido entre 1 e 7!\n");
+        }
+    } while (choice1 < 1 || choice1 > 7);
     
     do {
         inputWord("Escolha o SEGUNDO atributo (diferente do primeiro, 1 a 7): ", "%d", &choice2);
         if (choice1 == choice2) {
             printf("Erro: Tem de escolher um atributo diferente!\n");
+        } else if (choice2 < 1 || choice2 > 7) {
+            printf("Erro: Escolha um numero valido entre 1 e 7!\n");
         }
-    } while (choice1 == choice2);
+    } while (choice1 == choice2 || choice2 < 1 || choice2 > 7);
 
     // ==========================================
     // RESOLUÇÃO DA BATALHA
